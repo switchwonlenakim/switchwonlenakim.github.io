@@ -1,0 +1,328 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, BarChart3, TrendingUp, Zap, ExternalLink, ShieldCheck, Monitor, User, ArrowUpRight, Gift } from 'lucide-react';
+
+const App = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const brandColor = "#EF8600";
+  const brandLight = "#FFF4E6";
+  const brandAccent = "#FFB34D";
+
+  const slides = [
+    {
+      type: 'title',
+      title: "아직도 '수입·수출 대금'을\n수기로 관리하십니까?",
+      subtitle: "수출입 법인 대표님들이 반드시 확인해야 할\n'10초 관리법'",
+      bg: "bg-slate-900",
+      accent: "text-[#FFB34D]",
+      content: (
+        <div className="w-full mt-4 scale-90 origin-top">
+          <div className="bg-[#F8F9FA] rounded-xl p-4 shadow-2xl text-left border border-slate-700/50">
+            <div className="text-[10px] font-bold text-slate-400 mb-4 tracking-tighter uppercase">Overview Manager</div>
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 relative overflow-hidden">
+                <div className="text-[6px] text-slate-400">달러 (USD)</div>
+                <div className="text-[10px] font-bold text-slate-800">12,500 <span className="text-[6px] font-normal text-slate-500">USD</span></div>
+                <div className="absolute top-2 right-2 w-3 h-3 bg-blue-800 rounded-full border border-slate-100 flex items-center justify-center overflow-hidden">
+                   <div className="w-full h-[1px] bg-red-500 absolute rotate-45"></div>
+                   <div className="w-full h-[1px] bg-red-500 absolute -rotate-45"></div>
+                </div>
+              </div>
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 relative">
+                <div className="text-[6px] text-slate-400">엔화 (JPY)</div>
+                <div className="text-[10px] font-bold text-slate-800">850,000 <span className="text-[6px] font-normal text-slate-500">JPY</span></div>
+                <div className="absolute top-2 right-2 w-3 h-3 bg-white rounded-full border border-slate-200 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-red-600 rounded-full"></div>
+                </div>
+              </div>
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 relative">
+                <div className="text-[6px] text-slate-400">유로 (EUR)</div>
+                <div className="text-[10px] font-bold text-slate-800">4,200 <span className="text-[6px] font-normal text-slate-500">EUR</span></div>
+                <div className="absolute top-2 right-2 w-3 h-3 bg-blue-900 rounded-full border border-slate-100 overflow-hidden flex flex-col gap-[1px] p-[1px] items-center justify-center">
+                   <div className="grid grid-cols-3 gap-[1px]">
+                     {[...Array(6)].map((_,i) => <div key={i} className="w-[1px] h-[1px] bg-yellow-400 rounded-full"></div>)}
+                   </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 mb-3">
+              <ArrowUpRight size={10} className="text-slate-800" />
+              <div className="text-[9px] font-bold text-slate-800">이번 달 외화 거래 현황</div>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-blue-800 rounded-full"></div>
+                    <span className="text-[7px] font-bold">USD</span>
+                  </div>
+                  <span className="text-[5px] text-slate-400 tracking-tighter">BAL: 12,500</span>
+                </div>
+                <div className="bg-slate-50 p-1.5 rounded space-y-1">
+                  <div className="flex justify-between text-[4px] text-slate-300 tracking-tighter"><span>2026-03-05</span> <span className="text-blue-500 font-bold uppercase">In</span></div>
+                  <div className="text-[5px] font-bold leading-tight truncate">PO #2026-001 수출 선금 입금</div>
+                  <div className="flex justify-between text-[6px] font-bold"><span className="text-blue-500">+15,000</span> <span className="text-slate-400 font-normal">27,500</span></div>
+                </div>
+              </div>
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-white rounded-full border border-slate-200 flex items-center justify-center"><div className="w-1 h-1 bg-red-600 rounded-full"></div></div>
+                  <span className="text-[7px] font-bold">JPY</span>
+                </div>
+              </div>
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-100 flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-blue-900 rounded-full"></div>
+                    <span className="text-[7px] font-bold">EUR</span>
+                  </div>
+                  <span className="text-[5px] text-slate-400 tracking-tighter">BAL: 4,200</span>
+                </div>
+                <div className="bg-red-50 p-1.5 rounded relative border border-red-100">
+                   <div className="flex justify-between text-[4px] text-red-300"><span>2026-03-02</span> <span className="font-bold uppercase">Out</span></div>
+                   <div className="text-[5px] font-bold text-slate-800 truncate">디자인 라이선스 사용료</div>
+                   <div className="flex justify-between text-[6px] font-bold mb-1"><span className="text-red-500">-5,500</span> <span className="text-red-800">-1,300</span></div>
+                   <div className="bg-slate-900 text-white text-[4px] py-1 text-center rounded font-bold">부족분 환전 예약</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      type: 'problem',
+      title: '"담당자가 퇴사하면\n우리 회사 장부는 멈춥니다."',
+      subtitle: "수기 관리의 한계, 대표님의 리스크가 됩니다.",
+      items: [
+        "수기로 정리하다 발생하는 입금 누락/실수",
+        "다품종 소량 거래, 한눈에 안 보이는 자금 흐름",
+        "매번 물어봐야 알 수 있는 해외 거래처 정보"
+      ],
+      bg: "bg-red-50",
+      icon: <AlertCircle className="text-red-500 mb-6" size={64} />,
+      content: (
+        <div className="mt-8 flex justify-center">
+           <div className="relative border-2 border-dashed border-red-300 p-6 rounded-2xl bg-white rotate-2 max-w-sm shadow-xl">
+             <div className="absolute -top-4 -right-4 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">RISK!</div>
+             <p className="text-slate-400 text-sm font-mono">Invoice_2024_ver3_final.xlsx</p>
+             <div className="mt-2 space-y-1">
+               <div className="flex justify-between border-b border-red-100 pb-1">
+                 <span className="text-red-800 font-bold">Error 404</span>
+                 <span className="text-red-300">#N/A</span>
+               </div>
+               <div className="flex justify-between border-b border-red-100 pb-1">
+                 <span className="text-slate-400">송금액 불일치</span>
+                 <span className="text-red-500">-$2,400</span>
+               </div>
+             </div>
+           </div>
+        </div>
+      )
+    },
+    {
+      type: 'solution',
+      title: "스위치원비즈(Switchwon Biz)",
+      subtitle: "수출입 기업을 위한 스마트 통합자금관리",
+      items: [
+        "파일 업로드로 10초 만에 거래처 관리 끝!",
+        "복잡한 넷팅(Netting)도 클릭 몇 번으로 자동 정리",
+        "대표님의 스마트폰에서도 확인 가능한 실시간 대시보드"
+      ],
+      bg: "bg-[#EF8600]",
+      textColor: "text-white",
+      icon: <Zap className="text-white mb-6" size={64} />,
+      content: (
+        <div className="mt-8 bg-black/10 p-6 rounded-2xl border border-white/20 shadow-inner">
+           <div className="flex items-center gap-4">
+             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+               <div className="w-8 h-8 border-2 border-white rounded-md flex items-center justify-center">
+                 <div className="w-4 h-4 bg-white rounded-sm"></div>
+               </div>
+             </div>
+             <div className="text-left">
+               <p className="text-white font-black text-lg">쉽고 편리한 10초 솔루션</p>
+             </div>
+           </div>
+        </div>
+      )
+    },
+    {
+      type: 'benefit',
+      title: "의사결정은 빨라지고,\n리스크는 제로가 됩니다.",
+      items: [
+        { label: "외환캐시플로우", desc: "언제, 얼마가 나갈지 한눈에 보이는 현금 흐름" },
+        { label: "운영 효율", desc: "단순 반복 업무 90% 감소 → 코어 업무 집중" },
+        { label: "연속성", desc: "누구나 30분이면 마스터! 담당자 리스크 해결" }
+      ],
+      bg: "bg-slate-50",
+      icon: <TrendingUp style={{ color: brandColor }} className="mb-6" size={64} />,
+      content: (
+        <div className="mt-8 grid grid-cols-3 gap-3">
+          {[1,2,3].map(i => (
+            <div key={i} className="bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+              <div className="h-2 w-full bg-slate-100 rounded mb-2"></div>
+              <div className="h-8 w-full rounded" style={{ backgroundColor: brandLight }}></div>
+            </div>
+          ))}
+        </div>
+      )
+    },
+    {
+      type: 'offer',
+      title: "지금 파트너가 되시면,\n운영비가 수익이 됩니다.",
+      subtitle: "초기 파트너에게만 드리는 한정판 혜택",
+      items: [
+        "환전 수수료 100% 무료!",
+        "서비스 이용료 평생 무료!"
+      ],
+      bg: "bg-slate-900",
+      textColor: "text-white",
+      highlight: true,
+      content: (
+        <div className="mt-12 flex flex-col items-center justify-center">
+           <div className="relative">
+             <div className="absolute -inset-4 bg-orange-500/20 rounded-full blur-2xl animate-pulse"></div>
+             <div className="relative bg-white/10 p-8 rounded-full border border-white/20 shadow-2xl">
+                <Gift size={48} style={{ color: brandColor }} />
+             </div>
+           </div>
+           <p className="mt-8 text-slate-400 text-xs font-bold tracking-widest uppercase">Special Partnership Offer</p>
+        </div>
+      )
+    },
+    {
+      type: 'cta',
+      title: "",
+      subtitle: "",
+      bg: "bg-slate-900",
+      textColor: "text-white",
+      content: (
+        <div className="w-full flex flex-col items-center justify-center gap-0 px-2">
+          <div className="w-full mb-4">
+            <h2 className="text-[22px] font-black text-white leading-tight mb-4 text-left">
+              "지금 외환 잔액,<br/>
+              <span style={{ color: brandAccent }}>바로 말할 수 있으세요?</span>"
+            </h2>
+            <div className="space-y-1.5 mb-5 ml-1">
+              {[
+                { icon: "✓", text: "수기 실수는 줄이고" },
+                { icon: "✓", text: "캐시플로우는 한눈에" },
+                { icon: "✓", text: "핵심 업무에만 집중" },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5 py-1">
+                  <span className="text-sm font-black" style={{ color: brandAccent }}>{item.icon}</span>
+                  <span className="text-[14px] font-bold text-white tracking-tight">{item.text}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-[12px] text-slate-400 font-medium leading-relaxed text-left">
+              대표님을 위한 스마트 통합자금관리 솔루션입니다.
+            </p>
+          </div>
+          <div className="w-full h-px bg-white/10 mb-4" />
+          <a
+            href="https://dashboard-sample.switchwonbiz.com/"
+            target="_blank"
+            className="flex items-center justify-between w-full text-white p-4 rounded-2xl font-black text-[15px] transition-all hover:brightness-110 active:scale-95 mb-2.5"
+            style={{
+              backgroundColor: brandColor,
+              boxShadow: "0 8px 32px rgba(239,134,0,0.4)"
+            }}
+          >
+            지금 바로 샘플 대시보드 확인
+            <ChevronRight size={20} />
+          </a>
+          <a
+            href="https://forms.gle/XR7tmS12FFevLvre6"
+            target="_blank"
+            className="flex items-center justify-between w-full bg-white/5 text-white p-4 rounded-2xl font-bold text-[14px] border border-white/15 transition-all hover:bg-white/15 active:scale-95"
+          >
+            파트너 신청하고 혜택 받기
+            <ExternalLink size={16} />
+          </a>
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <div className="h-px w-12 bg-white/20"></div>
+            <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase">Switchwon Biz</p>
+          </div>
+        </div>
+      )
+    }
+  ];
+
+  const next = useCallback(() => setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1)), [slides.length]);
+  const prev = useCallback(() => setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1)), [slides.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [next, prev]);
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center p-4 font-sans antialiased">
+      <div className="w-full max-w-[420px] aspect-[4/5.5] relative bg-white rounded-[48px] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.15)] overflow-hidden transition-all duration-500 border border-slate-100">
+        <div className={`h-full w-full flex flex-col items-center justify-center text-center p-10 transition-colors duration-500 ${slides[currentSlide].bg} ${slides[currentSlide].textColor || 'text-slate-800'}`}>
+          {slides[currentSlide].icon}
+          <h2 className={`text-2xl font-black leading-tight whitespace-pre-line mb-4 ${slides[currentSlide].accent || ''}`}>
+            {slides[currentSlide].title}
+          </h2>
+          {slides[currentSlide].subtitle && (
+            <p className={`text-base mb-6 opacity-90 font-medium leading-relaxed ${slides[currentSlide].type === 'title' ? 'text-slate-400' : ''} whitespace-pre-line`}>
+              {slides[currentSlide].subtitle}
+            </p>
+          )}
+          {slides[currentSlide].items && (
+            <ul className="space-y-4 w-full text-left">
+              {slides[currentSlide].items.map((item, idx) => (
+                <li key={idx} className="flex gap-3">
+                  <div className="mt-1 shrink-0">
+                    <CheckCircle2 style={{ color: slides[currentSlide].textColor ? brandAccent : brandColor }} size={18} />
+                  </div>
+                  <span className="text-sm font-semibold leading-snug">
+                    {typeof item === 'string' ? item : (
+                      <>
+                        <strong className="block text-base mb-0.5">{item.label}</strong>
+                        <span className="opacity-70 font-medium">{item.desc}</span>
+                      </>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {slides[currentSlide].content}
+        </div>
+        <div className="absolute inset-y-0 left-0 w-20 flex items-center justify-start pl-4 z-50 group">
+          <button onClick={(e) => { e.stopPropagation(); prev(); }} className="p-3 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-xl border border-white/30 shadow-xl transition-all text-slate-900 group-hover:scale-110 active:scale-90">
+            <ChevronLeft size={28} />
+          </button>
+        </div>
+        <div className="absolute inset-y-0 right-0 w-20 flex items-center justify-end pr-4 z-50 group">
+          <button onClick={(e) => { e.stopPropagation(); next(); }} className="p-3 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-xl border border-white/30 shadow-xl transition-all text-slate-900 group-hover:scale-110 active:scale-90">
+            <ChevronRight size={28} />
+          </button>
+        </div>
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-50">
+          {slides.map((_, idx) => (
+            <button key={idx} onClick={() => setCurrentSlide(idx)} className="h-2 rounded-full transition-all duration-300" style={{ width: currentSlide === idx ? '40px' : '8px', backgroundColor: currentSlide === idx ? brandColor : 'rgba(150, 150, 150, 0.2)' }} />
+          ))}
+        </div>
+      </div>
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-100">
+           <span className="relative flex h-2 w-2">
+             <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: brandColor }}></span>
+             <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: brandColor }}></span>
+           </span>
+           <p className="text-slate-600 font-bold text-sm">화살표나 방향키로 성장을 확인하세요</p>
+        </div>
+        <p className="text-slate-400 font-bold text-sm tabular-nums tracking-widest">{currentSlide + 1} / {slides.length}</p>
+      </div>
+    </div>
+  );
+};
+
+export default App;
